@@ -1,0 +1,304 @@
+.navbar {
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.navbar-blue {
+  background-color: #1d9aca;
+  border-radius: 4px;
+}
+.navbar-blue .navbar-toggle {
+  border: none;
+}
+.navbar-blue .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+.navbar-blue .navbar-toggle:hover {
+  background-color: transparent;
+}
+.navbar-blue .navbar-toggle:hover .icon-bar {
+  background-color: #181f43;
+}
+.navbar-blue .navbar-nav > li > a {
+  color: #f6f6f6;
+}
+.navbar-blue .navbar-nav > .active > a,
+.navbar-blue .navbar-nav > .active > a:hover,
+.navbar-blue .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  background-color: #181f43 !important;
+  color: #f6f6f6 !important;
+}
+.table-nav {
+  position: relative;
+  text-align: center;
+}
+.pagination > li > a,
+.pagination > li > span {
+  border: none;
+}
+.table-nav .form-control {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 5px 0;
+}
+.table-nav label {
+  position: absolute;
+  right: 0;
+  margin: 20px 0;
+}
+.select-box {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  position: relative;
+  background-color: #1d9aca;
+  margin: 0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.select-box__item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 50%;
+      -ms-flex: 1 1 50%;
+          flex: 1 1 50%;
+  color: #fff;
+}
+.select-box__item:last-child {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -webkit-flex-shrink: 1;
+      -ms-flex-negative: 1;
+          flex-shrink: 1;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.select-box__item_active {
+  background-color: #181f43;
+}
+.select-box__item label {
+  display: block;
+  line-height: 20px;
+  padding: 15px;
+}
+.select-box__item label input[type="radio"] {
+  margin-left: 0;
+}
+.select-box__item label span {
+  margin-left: 20px;
+}
+.type-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.type-list__item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+.type-list__item:before {
+  content: "—";
+  margin-left: 10px;
+  color: #0086b3;
+}
+.type-list__item_active,
+.type-list__item:hover {
+  background-color: #181f43;
+}
+.type-list__item_active::before,
+.type-list__item:hover::before,
+.type-list__item_active a,
+.type-list__item:hover a {
+  color: #fff;
+}
+.type-list__item a {
+  display: inline-block;
+  width: 100%;
+  padding: 5px 15px 5px 5px;
+}
+.input-group {
+  display: block;
+}
+.input-group input.form-control {
+  display: inline-block;
+  border-radius: 4px !important;
+}
+.input-group .input-group-addon {
+  position: absolute;
+  right: 21px;
+  top: 9px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: #ccc;
+  z-index: 2;
+}
+.input-group .input-group-addon:hover {
+  color: #000;
+  cursor: pointer;
+}
+.topline {
+  margin-bottom: 15px;
+}
+.topline h2 {
+  display: inline-block;
+  margin-right: 25px;
+  font-weight: 500;
+}
+.topline h2 strong {
+  font-weight: 900;
+}
+.hoststat {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  padding: 10px 0 20px;
+  border-bottom: 1px solid #1d9aca;
+}
+.hoststat__count {
+  font-size: 30px;
+}
+.hoststat__of {
+  font-size: 20px;
+}
+.description {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.hostname {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+}
+.hostname a {
+  margin-left: auto;
+}
+.search h3 {
+  margin: 0 0 20px 0;
+}
+.search__submit {
+  background-color: #1d9aca;
+  color: #fff;
+  width: 100%;
+}
+.search__submit:hover {
+  background-color: #181f43;
+  color: #fff;
+}
+.history {
+  font-size: 16px;
+}
+.history td:first-child {
+  width: 40%;
+}
+.whois-data td:first-child {
+  padding-right: 10px;
+  width: 30%;
+}
+.provider-list tbody tr {
+  color: #1d9aca;
+}
+.provider-list tbody tr:hover {
+  background-color: #dfdfdf;
+}
+.provider-list tbody tr:hover a {
+  color: #000;
+}
+.provider-list tbody tr .up {
+  color: #008000;
+}
+.provider-list tbody tr .down {
+  color: #f00;
+}
+.provider-list tbody td,
+.provider-list tbody th {
+  border-top: none !important;
+}
+.provider-list thead tr th {
+  border-bottom: 1px solid #9ccee1;
+}
+.sidebar .how {
+  position: relative;
+  margin-top: -30px;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: 'Open Sans' sans-serif;
+}
+.text-black {
+  color: #000 !important;
+}
+div[class^='col-lg-'] {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+main {
+  min-height: 100%;
+  padding-bottom: 60px;
+}
+footer {
+  position: relative;
+  text-align: center;
+  padding: 20px;
+  margin-top: -60px;
+}
+a,
+.pagination > li > a,
+.pagination > li > span,
+.text-blue {
+  color: #1d9aca;
+}
+.toback {
+  display: inline-block;
+  margin-top: 27px;
+}
