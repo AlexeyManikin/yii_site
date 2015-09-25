@@ -29,6 +29,7 @@ class AppAsset extends AssetBundle
         '/js/moment.min.js',
         '/js/jquery.daterangepicker.js',
         '/js/bootstrap.min.js',
+        'http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js',
         '/js/index.js',
     ];
     public $depends = [

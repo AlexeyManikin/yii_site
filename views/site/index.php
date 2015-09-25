@@ -137,16 +137,6 @@ $this->title = 'Domain statistic';
                         <li><span class="text-black">1/2</span></li>
                         <li><a href="#" aria-label="Next"><span aria-hidden="true">Следующая <i class="glyphicon glyphicon-arrow-right"></i></span></a></li>
                     </ul>
-                    <label for="count">
-                        Показывать по:
-                        <select name="count" id="count" class="form-control">
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                            <option value="40">40</option>
-                            <option value="50">50</option>
-                        </select>
-                    </label>
 
 
                 </div>

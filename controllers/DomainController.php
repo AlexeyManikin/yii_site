@@ -11,4 +11,9 @@ class DomainController extends Controller
         return $this->render('index');
     }
 
+    public function actionGetDomainHistory($fqdn)
+    {
+
+    }
+
 }

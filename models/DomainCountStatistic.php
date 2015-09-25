@@ -5,34 +5,21 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "regru_stat_data".
+ * This is the model class for table "domain_count_statistic".
  *
  * @property integer $id
  * @property string $date
- * @property integer $provider_id
- * @property integer $value
- * @property RegruProviders $provider
+ * @property string $tld
+ * @property integer $count
  */
-
-class RegruStatData extends \yii\db\ActiveRecord
+class DomainCountStatistic extends \yii\db\ActiveRecord
 {
-    const R_REGRU_PROVIDERS = "provider";
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'regru_stat_data';
-    }
-
-
-    /**
-     * @return RegruProviders
-     */
-    public function getProvider()
-    {
-        return $this->hasOne(RegruProviders::className(), ["id" => "provider_id"]);
+        return 'domain_count_statistic';
     }
 
     /**
@@ -41,9 +28,11 @@ class RegruStatData extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date', 'value'], 'required'],
+            [['date', 'count'], 'required'],
             [['date'], 'safe'],
-            [['provider_id', 'value'], 'integer']
+            [['count'], 'integer'],
+            [['tld'], 'string', 'max' => 32],
+            [['date', 'tld'], 'unique', 'targetAttribute' => ['date', 'tld'], 'message' => 'The combination of Date and Tld has already been taken.']
         ];
     }
 
@@ -55,8 +44,8 @@ class RegruStatData extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'date' => 'Date',
-            'provider_id' => 'Provider ID',
-            'value' => 'Value',
+            'tld' => 'Tld',
+            'count' => 'Count',
         ];
     }
 
@@ -68,17 +57,17 @@ class RegruStatData extends \yii\db\ActiveRecord
     public static function getLastAvailableDate()
     {
         $db = \Yii::$app->db;
-        $query = $db->createCommand("SELECT max(date) AS last_date FROM regru_stat_data");
+        $query = $db->createCommand("SELECT max(date) AS last_date FROM ".DomainCountStatistic::tableName());
         $last_date = $query->queryOne();
         return $last_date['last_date'];
     }
 
     /**
      * @inheritdoc
-     * @return RegruStatDataQuery the active query used by this AR class.
+     * @return DomainCountStatisticQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new RegruStatDataQuery(get_called_class());
+        return new DomainCountStatisticQuery(get_called_class());
     }
 }

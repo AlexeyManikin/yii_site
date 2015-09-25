@@ -57,6 +57,7 @@ class RegruProviders extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
      * @inheritdoc
      * @return RegruProvidersQuery the active query used by this AR class.

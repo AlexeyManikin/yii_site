@@ -4,7 +4,6 @@
         google.setOnLoadCallback(drawBasic);
 
         function drawBasic() {
-
             var data = new google.visualization.DataTable();
             data.addColumn('number', 'X');
             data.addColumn('number', 'Домены');
@@ -27,7 +26,6 @@
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
             chart.draw(data, options);
         }
 
@@ -66,16 +64,11 @@
 
     }());
 
-
-
     (function(){
-
         var container = document.querySelector('.chart__graph');
-
         if (container !== null)  {
             google.load('visualization', '1', {packages: ['corechart', 'line']});
             google.setOnLoadCallback(drawBasic);
-
             function drawBasic() {
 
                 var data = new google.visualization.DataTable();
@@ -100,11 +93,7 @@
                 };
 
                 var chart = new google.visualization.LineChart(container);
-
                 chart.draw(data, options);
             }
         }
-
-
-
     }());
