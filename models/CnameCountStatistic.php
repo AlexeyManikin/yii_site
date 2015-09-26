@@ -13,8 +13,16 @@ use Yii;
  * @property string $tld
  * @property integer $count
  */
-class CnameCountStatistic extends \yii\db\ActiveRecord
+class CnameCountStatistic extends AbstractStatistic
 {
+    /**
+     * @return string
+     */
+    public function getAggregateItem()
+    {
+        return $this->cname;
+    }
+    
     /**
      * @inheritdoc
      */

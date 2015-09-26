@@ -12,8 +12,16 @@ use Yii;
  * @property string $tld
  * @property integer $count
  */
-class DomainCountStatistic extends \yii\db\ActiveRecord
+class DomainCountStatistic extends AbstractStatistic
 {
+    /**
+     * @return string
+     */
+    public function getAggregateItem()
+    {
+        return $this->tld;
+    }
+
     /**
      * @inheritdoc
      */

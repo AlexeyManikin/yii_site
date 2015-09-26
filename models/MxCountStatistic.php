@@ -13,8 +13,16 @@ use Yii;
  * @property string $tld
  * @property integer $count
  */
-class MxCountStatistic extends \yii\db\ActiveRecord
+class MxCountStatistic extends AbstractStatistic
 {
+    /**
+     * @return string
+     */
+    public function getAggregateItem()
+    {
+        return $this->mx;
+    }
+
     /**
      * @inheritdoc
      */

@@ -13,8 +13,16 @@ use Yii;
  * @property string $tld
  * @property integer $count
  */
-class RegistrantCountStatistic extends \yii\db\ActiveRecord
+class RegistrantCountStatistic extends AbstractStatistic
 {
+    /**
+     * @return string
+     */
+    public function getAggregateItem()
+    {
+        return $this->registrant;
+    }
+
     /**
      * @inheritdoc
      */

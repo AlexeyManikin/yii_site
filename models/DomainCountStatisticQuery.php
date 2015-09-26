@@ -7,29 +7,13 @@ namespace app\models;
  *
  * @see DomainCountStatistic
  */
-class DomainCountStatisticQuery extends \yii\db\ActiveQuery
+class DomainCountStatisticQuery extends AbstractStatisticQuery
 {
-    /*public function active()
-    {
-        $this->andWhere('[[status]]=1');
-        return $this;
-    }*/
-
     /**
-     * @inheritdoc
-     * @return DomainCountStatistic[]|array
+     * @return string
      */
-    public function all($db = null)
+    public function getTableName()
     {
-        return parent::all($db);
-    }
-
-    /**
-     * @inheritdoc
-     * @return DomainCountStatistic|array|null
-     */
-    public function one($db = null)
-    {
-        return parent::one($db);
+        return DomainCountStatistic::tableName();
     }
 }

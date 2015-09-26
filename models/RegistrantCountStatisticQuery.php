@@ -7,29 +7,13 @@ namespace app\models;
  *
  * @see RegistrantCountStatistic
  */
-class RegistrantCountStatisticQuery extends \yii\db\ActiveQuery
+class RegistrantCountStatisticQuery extends AbstractStatisticQuery
 {
-    /*public function active()
-    {
-        $this->andWhere('[[status]]=1');
-        return $this;
-    }*/
-
     /**
-     * @inheritdoc
-     * @return RegistrantCountStatistic[]|array
+     * @return string
      */
-    public function all($db = null)
+    public function getTableName()
     {
-        return parent::all($db);
-    }
-
-    /**
-     * @inheritdoc
-     * @return RegistrantCountStatistic|array|null
-     */
-    public function one($db = null)
-    {
-        return parent::one($db);
+        return RegistrantCountStatistic::tableName();
     }
 }

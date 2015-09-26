@@ -7,29 +7,13 @@ namespace app\models;
  *
  * @see NsCountStatistic
  */
-class NsCountStatisticQuery extends \yii\db\ActiveQuery
+class NsCountStatisticQuery extends AbstractStatisticQuery
 {
-    /*public function active()
-    {
-        $this->andWhere('[[status]]=1');
-        return $this;
-    }*/
-
     /**
-     * @inheritdoc
-     * @return NsCountStatistic[]|array
+     * @return string
      */
-    public function all($db = null)
+    public function getTableName()
     {
-        return parent::all($db);
-    }
-
-    /**
-     * @inheritdoc
-     * @return NsCountStatistic|array|null
-     */
-    public function one($db = null)
-    {
-        return parent::one($db);
+        return NsCountStatistic::tableName();
     }
 }

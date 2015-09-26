@@ -12,15 +12,34 @@ use Yii;
  * @property integer $asn
  * @property string $tld
  * @property integer $count
+ * @property AsList $aslist
  */
-class AsCountStatistic extends \yii\db\ActiveRecord
+class AsCountStatistic extends AbstractStatistic
 {
+    const R_AS_LIST = "aslist";
+
+    /**
+     * @return string
+     */
+    public function getAggregateItem()
+    {
+        return $this->asn;
+    }
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'as_count_statistic';
+    }
+
+    /**
+     * @return AsList
+     */
+    public function getAslist()
+    {
+        return $this->hasOne(AsList::className(), ["id" => "asn"]);
     }
 
     /**
@@ -49,6 +68,19 @@ class AsCountStatistic extends \yii\db\ActiveRecord
             'tld' => 'Tld',
             'count' => 'Count',
         ];
+    }
+
+    /**
+     * Возвращаем дату последнего обновления информации по NS серверам провайдера
+     *
+     * @return mixed
+     */
+    public static function getLastAvailableDate()
+    {
+        $db = \Yii::$app->db;
+        $query = $db->createCommand("SELECT max(date) AS last_date FROM ".DomainCountStatistic::tableName());
+        $last_date = $query->queryOne();
+        return $last_date['last_date'];
     }
 
     /**

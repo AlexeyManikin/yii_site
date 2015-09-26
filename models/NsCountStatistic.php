@@ -13,8 +13,16 @@ use Yii;
  * @property string $tld
  * @property integer $count
  */
-class NsCountStatistic extends \yii\db\ActiveRecord
+class NsCountStatistic extends AbstractStatistic
 {
+    /**
+     * @return string
+     */
+    public function getAggregateItem()
+    {
+        return $this->ns;
+    }
+
     /**
      * @inheritdoc
      */

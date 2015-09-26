@@ -7,29 +7,13 @@ namespace app\models;
  *
  * @see CnameCountStatistic
  */
-class CnameCountStatisticQuery extends \yii\db\ActiveQuery
+class CnameCountStatisticQuery  extends AbstractStatisticQuery
 {
-    /*public function active()
-    {
-        $this->andWhere('[[status]]=1');
-        return $this;
-    }*/
-
     /**
-     * @inheritdoc
-     * @return CnameCountStatistic[]|array
+     * @return string
      */
-    public function all($db = null)
+    public function getTableName()
     {
-        return parent::all($db);
-    }
-
-    /**
-     * @inheritdoc
-     * @return CnameCountStatistic|array|null
-     */
-    public function one($db = null)
-    {
-        return parent::one($db);
+        return CnameCountStatistic::tableName();
     }
 }

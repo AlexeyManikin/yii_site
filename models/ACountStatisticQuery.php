@@ -7,29 +7,13 @@ namespace app\models;
  *
  * @see ACountStatistic
  */
-class ACountStatisticQuery extends \yii\db\ActiveQuery
+class ACountStatisticQuery extends AbstractStatisticQuery
 {
-    /*public function active()
-    {
-        $this->andWhere('[[status]]=1');
-        return $this;
-    }*/
-
     /**
-     * @inheritdoc
-     * @return ACountStatistic[]|array
+     * @return string
      */
-    public function all($db = null)
+    public function getTableName()
     {
-        return parent::all($db);
-    }
-
-    /**
-     * @inheritdoc
-     * @return ACountStatistic|array|null
-     */
-    public function one($db = null)
-    {
-        return parent::one($db);
+        return ACountStatistic::tableName();
     }
 }
