@@ -11,10 +11,11 @@ use Yii;
  * @property string $date
  * @property integer $provider_id
  * @property integer $value
+ * @property integer $count
  * @property RegruProviders $provider
  */
 
-class RegruStatData extends \yii\db\ActiveRecord
+class RegruStatData extends AbstractStatistic
 {
     const R_REGRU_PROVIDERS = "provider";
 
@@ -26,6 +27,21 @@ class RegruStatData extends \yii\db\ActiveRecord
         return 'regru_stat_data';
     }
 
+    /**
+     * @return int
+     */
+    public function getCount()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAggregateItem()
+    {
+        return $this->provider->name;
+    }
 
     /**
      * @return RegruProviders
@@ -57,6 +73,7 @@ class RegruStatData extends \yii\db\ActiveRecord
             'date' => 'Date',
             'provider_id' => 'Provider ID',
             'value' => 'Value',
+            'count' => 'Count'
         ];
     }
 

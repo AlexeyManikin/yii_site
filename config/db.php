@@ -6,4 +6,9 @@ return [
     'username' => 'domain_statistic',
     'password' => 'domain_statisticdomain_statistic',
     'charset' => 'utf8',
+
+//    // включаем профайлер
+//    'enableProfiling'=>true,
+//    // показываем значения параметров
+//    'enableParamLogging' => true,
 ];

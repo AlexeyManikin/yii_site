@@ -9,8 +9,28 @@ namespace app\models;
  * @method RegruStatData one($db=null)
  * @method RegruStatData[] all($db=null)
  */
-class RegruStatDataQuery extends \yii\db\ActiveQuery
+class RegruStatDataQuery extends AbstractStatisticQuery
 {
+    /**
+     * @return string
+     */
+    public function getTableName()
+    {
+        return RegruStatData::tableName();
+    }
+
+    /**
+     * Возвращаем данные только определенной зоны
+     *
+     * @param string $zone
+     * @return $this
+     */
+    public function getZone($zone="ALL")
+    {
+        return $this;
+    }
+
+
     /**
      * Выбрать записи со значением не более определенной даты
      *

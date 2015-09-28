@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\controllers\statistic\StatisticController;
 use app\models\ACountStatistic;
 use app\models\AsCountStatistic;
 use app\models\CnameCountStatistic;
@@ -40,56 +41,23 @@ class SiteController extends Controller
      * @param string $date_start
      * @param string $date_end
      */
-    public function actionGetAsStatistic($zone='ru', $date_start='NOW', $date_end='NOW')
+    public function actionGetDomainCount($zone='ru', $date_start='NOW', $date_end='NOW')
     {
-        if ($date_end == 'NOW') {
-            $date_end = DomainCountStatistic::getLastAvailableDate();
-            if ($date_start == 'NOW') {
-                $date_end_normal = DateTime::createFromFormat("Y-m-d", $date_end);
-                date_sub($date_end_normal, date_interval_create_from_date_string('1 day'));
-                $date_start = $date_end_normal->format('Y-m-d');
-            }
-        }
-
-        $d_start = DateTime::createFromFormat("Y-m-d", $date_start);
-        $d_end   = DateTime::createFromFormat("Y-m-d", $date_end);
-
-        if ($d_start > $d_end) {
-            # выбрасываем исключение
-            echo "Exceptions =))";
-            return;
-        }
-
-        $start_info = AsCountStatistic::find()->getZone($zone)->getNotMoreDate($date_start)->all();
-        $end_info = AsCountStatistic::find()->getZone($zone)->getNotMoreDate($date_end)
-                                            ->with(AsCountStatistic::R_AS_LIST)
-                                            ->orderBy('count DESC')
-                                            ->all();
-
-        $start_count_array = [];
-        foreach ($start_info as $start_asn_info) {
-            $start_count_array[$start_asn_info->asn] = $start_asn_info->count;
-        }
-
-        $return_array = [];
-        $i = 1;
-        foreach ($end_info as $as_info) {
-            $start_value = 0;
-            if (array_key_exists($as_info->asn, $start_count_array)) {
-                $start_value = $start_count_array[$as_info->asn];
-            }
-
-            $provider_info = array(
-                'id'          => $i++,
-                'as'          => $as_info->asn,
-                'start_value' => $start_value,
-                'end_count'   => $as_info->count,
-                'zone'        => $zone,
-                'description' => $as_info->aslist->descriptions,
-                'country'     => $as_info->aslist->country,
-            );
-
-            array_push($return_array, $provider_info);
+        $date_array = StatisticController::checkDate($date_start, $date_end, 30,
+                                                     StatisticController::STATISTIC_DOMAIN);
+        $domain_count = DomainCountStatistic::find()->getZone($zone)
+                                                    ->getDateInterval($date_array['start_date'],
+                                                                      $date_array['end_date'])
+                                                    ->orderBy('id')
+                                                    ->all();
+        $return_array = array();
+        $i = 0;
+        foreach ($domain_count as $item) {
+            $value = ['id'    => $i++,
+                      'date'  => $item->date,
+                      'zone'  => $item->tld,
+                      'count' => $item->count];
+            array_push($return_array, $value);
         }
 
         print_r($return_array);
@@ -104,45 +72,18 @@ class SiteController extends Controller
      */
     public function actionGetNsProviderStats($date_start='NOW', $date_end='NOW')
     {
-        if ($date_end == 'NOW') {
-            $date_end = RegruStatData::getLastAvailableDate();
-            if ($date_start == 'NOW') {
-                $date_end_normal = DateTime::createFromFormat("Y-m-d", $date_end);
-                date_sub($date_end_normal, date_interval_create_from_date_string('1 day'));
-                $date_start = $date_end_normal->format('Y-m-d');
-            }
-        }
-
-        if (DateTime::createFromFormat("Y-m-d", $date_start) > DateTime::createFromFormat("Y-m-d", $date_end)) {
-            # выбрасываем исключение
-            echo "Exceptions =))";
-            return;
-        }
-
-        $start_info_providers = RegruStatData::find()->getNotMoreDate($date_start)->all();
-        $end_info_providers = RegruStatData::find()->getNotMoreDate($date_end)
-                                ->with(RegruStatData::R_REGRU_PROVIDERS)->orderBy('value DESC')->all();
-
-        $start_count_array = [];
-        foreach ($start_info_providers as $start_provider) {
-            $start_count_array[$start_provider->provider_id] = $start_provider->value;
-        }
-
+        $controller_statistic = new StatisticController(StatisticController::STATISTIC_REGRU, 1);
+        $data = $controller_statistic->getDate('ru', $date_start, $date_end);
         $return_array = [];
         $i = 1;
-        foreach ($end_info_providers as $provider) {
-            $start_value = 0;
-            if (array_key_exists($provider->provider_id, $start_count_array)) {
-                $start_value = $start_count_array[$provider->value];
-            }
-
+        foreach ($data as $item) {
             $provider_info = array(
                 'id'          => $i++,
-                'name'        => $provider->provider->name,
-                'start_value' => $start_value,
-                'end_count'   => $provider->value,
-                'type'        => $provider->provider->type,
-                'link'        => $provider->provider->link
+                'name'        => $item['end_item']->provider->name,
+                'start_value' => $item['start_count'],
+                'end_count'   => $item['end_count'],
+                'type'        => $item['end_item']->provider->type,
+                'link'        => $item['end_item']->provider->link
             );
 
             array_push($return_array, $provider_info);
@@ -156,41 +97,24 @@ class SiteController extends Controller
      * @param string $date_start
      * @param string $date_end
      */
-    public function actionGetDomainCount($zone='ru', $date_start='NOW', $date_end='NOW')
+    public function actionGetAsStatistic($zone='ru', $date_start='NOW', $date_end='NOW')
     {
-        if ($date_end == 'NOW') {
-            $date_end = DomainCountStatistic::getLastAvailableDate();
-            if ($date_start == 'NOW') {
-                $date_end_normal = DateTime::createFromFormat("Y-m-d", $date_end);
-                date_sub($date_end_normal, date_interval_create_from_date_string('30 day'));
-                $date_start = $date_end_normal->format('Y-m-d');
-            }
-        }
+        $controller_statistic = new StatisticController(StatisticController::STATISTIC_AS, 1);
+        $data = $controller_statistic->getDate($zone, $date_start, $date_end);
+        $return_array = [];
+        $i = 1;
+        foreach ($data as $item) {
+            $provider_info = array(
+                'id'          => $i++,
+                'as'          => $item['item'],
+                'start_value' => $item['start_count'],
+                'end_count'   => $item['end_count'],
+                'zone'        => $zone,
+                'description' => $item['end_item']->aslist->descriptions,
+                'country'     => $item['end_item']->aslist->country
+            );
 
-        $d_start = DateTime::createFromFormat("Y-m-d", $date_start);
-        $d_end   = DateTime::createFromFormat("Y-m-d", $date_end);
-
-        if ($d_start > $d_end) {
-            # выбрасываем исключение
-            echo "Exceptions =))";
-            return;
-        }
-
-        $domain_count = DomainCountStatistic::find()->getZone($zone)
-                                                    ->getDateInterval($date_start, $date_end)
-                                                    ->orderBy('id')
-                                                    ->all();
-
-        $return_array = array();
-
-        $i = 0;
-        foreach ($domain_count as $c) {
-            $value = ['id'=> $i++,
-                      'date' => $c->date,
-                      'zone' => $zone,
-                      'count' => $c->count];
-
-            array_push($return_array, $value);
+            array_push($return_array, $provider_info);
         }
 
         print_r($return_array);
@@ -205,52 +129,20 @@ class SiteController extends Controller
      */
     public function actionGetIpDomainCount($zone='ru', $date_start='NOW', $date_end='NOW')
     {
-        if ($date_end == 'NOW') {
-            $date_end = DomainCountStatistic::getLastAvailableDate();
-            if ($date_start == 'NOW') {
-                $date_end_normal = DateTime::createFromFormat("Y-m-d", $date_end);
-                date_sub($date_end_normal, date_interval_create_from_date_string('1 day'));
-                $date_start = $date_end_normal->format('Y-m-d');
-            }
-        }
-
-        $d_start = DateTime::createFromFormat("Y-m-d", $date_start);
-        $d_end   = DateTime::createFromFormat("Y-m-d", $date_end);
-
-        if ($d_start > $d_end) {
-            # выбрасываем исключение
-            echo "Exceptions =))";
-            return;
-        }
-
-        $start_info = ACountStatistic::find()->getZone($zone)->getNotMoreDate($date_start)->all();
-        $end_info = ACountStatistic::find()->getZone($zone)->getNotMoreDate($date_end)
-            ->with(ACountStatistic::R_AS_LIST)
-            ->orderBy('count DESC')
-            ->all();
-
-        $start_count_array = [];
-        foreach ($start_info as $start_asn_info) {
-            $start_count_array[$start_asn_info->a] = $start_asn_info->count;
-        }
-
+        $controller_statistic = new StatisticController(StatisticController::STATISTIC_A, 1);
+        $data = $controller_statistic->getDate($zone, $date_start, $date_end);
         $return_array = [];
         $i = 1;
-        foreach ($end_info as $ip_info) {
-            $start_value = 0;
-            if (array_key_exists($ip_info->a, $start_count_array)) {
-                $start_value = $start_count_array[$ip_info->a];
-            }
-
+        foreach ($data as $item) {
             $provider_info = array(
                 'id'          => $i++,
-                'a'           => $ip_info->a,
-                'start_value' => $start_value,
-                'end_count'   => $ip_info->count,
+                'a'           => $item['item'],
+                'start_value' => $item['start_count'],
+                'end_count'   => $item['end_count'],
                 'zone'        => $zone,
-                'as'          => $ip_info->asn,
-                'description' => $ip_info->aslist->descriptions,
-                'country'     => $ip_info->aslist->country,
+                'as'          => $item['end_item']->asn,
+                'description' => $item['end_item']->aslist->descriptions,
+                'country'     => $item['end_item']->aslist->country
             );
 
             array_push($return_array, $provider_info);
@@ -268,48 +160,17 @@ class SiteController extends Controller
      */
     public function actionGetCnameCount($zone='ru', $date_start='NOW', $date_end='NOW')
     {
-        if ($date_end == 'NOW') {
-            $date_end = DomainCountStatistic::getLastAvailableDate();
-            if ($date_start == 'NOW') {
-                $date_end_normal = DateTime::createFromFormat("Y-m-d", $date_end);
-                date_sub($date_end_normal, date_interval_create_from_date_string('1 day'));
-                $date_start = $date_end_normal->format('Y-m-d');
-            }
-        }
-
-        $d_start = DateTime::createFromFormat("Y-m-d", $date_start);
-        $d_end   = DateTime::createFromFormat("Y-m-d", $date_end);
-
-        if ($d_start > $d_end) {
-            # выбрасываем исключение
-            echo "Exceptions =))";
-            return;
-        }
-
-        $start_info = CnameCountStatistic::find()->getZone($zone)->getNotMoreDate($date_start)->all();
-        $end_info = CnameCountStatistic::find()->getZone($zone)->getNotMoreDate($date_end)
-                                               ->orderBy('count DESC')
-                                               ->all();
-
-        $start_count_array = [];
-        foreach ($start_info as $start_asn_info) {
-            $start_count_array[$start_asn_info->cname] = $start_asn_info->count;
-        }
-
+        $controller_statistic = new StatisticController(StatisticController::STATISTIC_CNAME, 1);
+        $data = $controller_statistic->getDate($zone, $date_start, $date_end);
         $return_array = [];
         $i = 1;
-        foreach ($end_info as $cname_info) {
-            $start_value = 0;
-            if (array_key_exists($cname_info->cname, $start_count_array)) {
-                $start_value = $start_count_array[$cname_info->cname];
-            }
-
+        foreach ($data as $item) {
             $provider_info = array(
                 'id'          => $i++,
-                'cname'       => $cname_info->cname,
-                'start_value' => $start_value,
-                'end_count'   => $cname_info->count,
-                'zone'        => $zone
+                'cname'       => $item['item'],
+                'start_value' => $item['start_count'],
+                'end_count'   => $item['end_count'],
+                'zone'        => $zone,
             );
 
             array_push($return_array, $provider_info);

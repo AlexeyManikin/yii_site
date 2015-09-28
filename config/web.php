@@ -26,20 +26,22 @@ $config = [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning', 'trace', 'info'],
                 ],
             ],
-        ],
+       ],
+
         'db' => require(__DIR__ . '/db.php'),
     ],
     'params' => $params,
 ];
 
-if (YII_ENV_DEV) {
+if (/*YII_ENV_DEV*/ True) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
+        "allowedIPs" => ['127.0.0.2', '::1', '83.243.70.247']
     ];
 
     $config['bootstrap'][] = 'gii';

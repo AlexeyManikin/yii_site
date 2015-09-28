@@ -13,5 +13,8 @@ use Yii;
 
 abstract class AbstractStatistic extends \yii\db\ActiveRecord
 {
+    /**
+     * @return mixed
+     */
     abstract public function getAggregateItem();
 }
