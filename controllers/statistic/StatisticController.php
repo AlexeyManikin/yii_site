@@ -139,13 +139,54 @@ class StatisticController
     }
 
     /**
+     * @param $value
+     * @param $date_start
+     * @param $date_end
+     * @param null $zone
+     * @return array
+     * @throws Exception
+     */
+    public function getDateToGraph($value, $date_start, $date_end, $zone = NULL)
+    {
+        $date_array = StatisticController::checkDate($date_start, $date_end, 30);
+        $query  = $this->getQuery();
+        if ($zone) {
+            $query->getZone($zone);
+        }
+        $data_count = $query->getOnlyItem($value)
+                            ->getDateInterval($date_array['start_date'],
+                                             $date_array['end_date'])
+                            ->orderBy('id')
+                            ->all();
+        $return_array = array();
+        $i = 0;
+
+        /**
+         * @var AbstractStatistic $item
+         */
+        foreach ($data_count as $item) {
+            $value = [
+                'id'    => $i++,
+                'date'  => $item->date,
+                'item'  => $item->getAggregateItem(),
+                'count' => $item->count,
+                'obj'   => $item];
+
+            array_push($return_array, $value);
+        }
+
+        return $return_array;
+    }
+
+    /**
+     *
      * @param string $zone
      * @param string $date_start
      * @param string $date_end
      * @return array
      * @throws Exception
      */
-    public function getDate($zone, $date_start, $date_end)
+    public function getDateToTable($zone, $date_start, $date_end)
     {
         $date = StatisticController::checkDate($date_start, $date_end, $this->default_interval);
 

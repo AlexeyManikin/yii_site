@@ -16,4 +16,14 @@ class CnameCountStatisticQuery  extends AbstractStatisticQuery
     {
         return CnameCountStatistic::tableName();
     }
+
+    /**
+     * @param $item
+     * @return $this
+     */
+    public function getOnlyItem($item)
+    {
+        $a = $this->getTableName();
+        return $this->andWhere("{$a}.cname = :cname", [':cname' => $item]);
+    }
 }

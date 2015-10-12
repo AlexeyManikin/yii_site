@@ -13,6 +13,11 @@ abstract class AbstractStatisticQuery extends \yii\db\ActiveQuery
     public abstract function getTableName();
 
     /**
+     * @return mixed
+     */
+    public abstract function getOnlyItem($item);
+
+    /**
      * Выбрать записи со значением не более определенной даты
      *
      * @return $this

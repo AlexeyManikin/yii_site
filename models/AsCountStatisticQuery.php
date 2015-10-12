@@ -16,4 +16,14 @@ class AsCountStatisticQuery extends AbstractStatisticQuery
     {
         return AsCountStatistic::tableName();
     }
+
+    /**
+     * @param $item
+     * @return $this
+     */
+    public function getOnlyItem($item)
+    {
+        $a = $this->getTableName();
+        return $this->andWhere("{$a}.asn = :asn", [':asn' => $item]);
+    }
 }

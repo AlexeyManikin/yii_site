@@ -16,4 +16,14 @@ class MxCountStatisticQuery extends AbstractStatisticQuery
     {
         return MxCountStatistic::tableName();
     }
+
+    /**
+     * @param $item
+     * @return $this
+     */
+    public function getOnlyItem($item)
+    {
+        $a = $this->getTableName();
+        return $this->andWhere("{$a}.mx = :mx", [':mx' => $item]);
+    }
 }

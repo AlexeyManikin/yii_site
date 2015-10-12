@@ -30,6 +30,15 @@ class RegruStatDataQuery extends AbstractStatisticQuery
         return $this;
     }
 
+    /**
+     * @param $item
+     * @return $this
+     */
+    public function getOnlyItem($item)
+    {
+        $a = $this->getTableName();
+        return $this->andWhere("{$a}.provider_id = :provider_id", [':provider_id' => $item]);
+    }
 
     /**
      * Выбрать записи со значением не более определенной даты

@@ -16,4 +16,14 @@ class NsCountStatisticQuery extends AbstractStatisticQuery
     {
         return NsCountStatistic::tableName();
     }
+
+    /**
+     * @param $item
+     * @return $this
+     */
+    public function getOnlyItem($item)
+    {
+        $a = $this->getTableName();
+        return $this->andWhere("{$a}.ns = :ns", [':ns' => $item]);
+    }
 }

@@ -16,4 +16,14 @@ class RegistrantCountStatisticQuery extends AbstractStatisticQuery
     {
         return RegistrantCountStatistic::tableName();
     }
+
+    /**
+     * @param $item
+     * @return $this
+     */
+    public function getOnlyItem($item)
+    {
+        $a = $this->getTableName();
+        return $this->andWhere("{$a}.registrant = :registrant", [':registrant' => $item]);
+    }
 }
