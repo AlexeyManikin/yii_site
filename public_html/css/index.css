@@ -125,10 +125,18 @@
   margin-left: 10px;
   color: #0086b3;
 }
-.type-list__item_active,
-.type-list__item:hover {
+.type-list__item_active {
   background-color: #181f43;
 }
+
+.type-list__item:hover {
+  background-color: #999999;
+}
+
+.type-list__item_active:hover {
+  background-color: #181f43;
+}
+
 .type-list__item_active::before,
 .type-list__item:hover::before,
 .type-list__item_active a,

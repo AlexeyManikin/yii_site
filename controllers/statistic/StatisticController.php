@@ -88,12 +88,20 @@ class StatisticController
      * Возвращаем дату последнего обновления информации
      *
      * @param $table_name
+     * @param bool $last_date
      * @return mixed
      */
-    public function getLastAvailableDate($table_name)
+    public function getLastAvailableDate($table_name, $last_date=false)
     {
         $db = \Yii::$app->db;
-        $query = $db->createCommand("SELECT max(date) AS last_date FROM {$table_name}");
+        $where = "";
+
+        if ($last_date) {
+            $qlast_date = $db->quoteValue($last_date);
+            $where = "WHERE date < $qlast_date";
+        }
+
+        $query = $db->createCommand("SELECT max(date) AS last_date FROM {$table_name} $where");
         $last_date = $query->queryOne();
         return $last_date['last_date'];
     }

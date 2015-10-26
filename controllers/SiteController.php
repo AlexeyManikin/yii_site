@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\controllers\statistic\StatisticController;
+use DateTime;
 use Yii;
 use yii\web\Controller;
 
@@ -18,17 +19,19 @@ class SiteController extends Controller
     }
 
     /**
+     * @param string $zone
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($zone='ru')
     {
-        return $this->render('index');
+        return $this->render('index', ['zone' => $zone]);
     }
 
     /**
      * @param string $zone
      * @param string $date_start
      * @param string $date_end
+     * @return string
      */
     public function actionGetDomainCountGraph($zone='ru', $date_start='NOW', $date_end='NOW')
     {
@@ -37,16 +40,12 @@ class SiteController extends Controller
 
         $return_array = array();
         foreach ($data as $item) {
-            $value = [
-                'id'    => $item['id'],
-                'date'  => $item['date'],
-                'tld'   => $zone,
-                'count' => $item['count']
-                ];
-            array_push($return_array, $value);
-        }
+            $date = new DateTime($item['date']);
+            $array_item = [(int) $date->format('d'), $item['count']];
+            array_push($return_array, $array_item);
 
-        print_r($return_array);
+        }
+        return json_encode($return_array);
     }
 
     /**
@@ -252,7 +251,9 @@ class SiteController extends Controller
         $controller_statistic = new StatisticController(StatisticController::STATISTIC_REGRU, 1);
         $data = $controller_statistic->getDateToTable('ru', $date_start, $date_end);
         $return_array = [];
+        $i = 0;
         foreach ($data as $item) {
+            $i++;
             $provider_info = array(
                 'id'          => $item['id'],
                 'name'        => $item['end_item']->provider->name,
@@ -266,7 +267,9 @@ class SiteController extends Controller
             array_push($return_array, $provider_info);
         }
 
-        print_r($return_array);
+        return json_encode(['iTotalRecords' => $i,
+                            'iTotalDisplayRecords' => $i,
+                            'aaData' => $return_array]);
     }
 
     /**
@@ -279,21 +282,28 @@ class SiteController extends Controller
         $controller_statistic = new StatisticController(StatisticController::STATISTIC_AS, 1);
         $data = $controller_statistic->getDateToTable($zone, $date_start, $date_end);
         $return_array = [];
+        $i = 1;
         foreach ($data as $item) {
             $provider_info = array(
-                'id'          => $item['id'],
+                'id'          => $i,
                 'as'          => $item['item'],
                 'start_value' => $item['start_count'],
                 'end_count'   => $item['end_count'],
                 'zone'        => $zone,
                 'description' => $item['end_item']->aslist->descriptions,
-                'country'     => $item['end_item']->aslist->country
+                'country'     => $item['end_item']->aslist->country,
+                'diff'        => (int) $item['end_count'] - (int) $item['start_count']
             );
 
-            array_push($return_array, $provider_info);
+            if ($item['item'] != 0) {
+                $i++;
+                array_push($return_array, $provider_info);
+            }
         }
 
-        print_r($return_array);
+        return json_encode(['iTotalRecords' => $i,
+                            'iTotalDisplayRecords' => $i,
+                            'aaData' => $return_array]);
     }
 
     /**
@@ -303,25 +313,32 @@ class SiteController extends Controller
      */
     public function actionGetIpDomainTableStatistic($zone='ru', $date_start='NOW', $date_end='NOW')
     {
-        $controller_statistic = new StatisticController(StatisticController::STATISTIC_A, 1);
+        $controller_statistic = new StatisticController(StatisticController::STATISTIC_A, 70);
         $data = $controller_statistic->getDateToTable($zone, $date_start, $date_end);
         $return_array = [];
+        $i = 1;
         foreach ($data as $item) {
             $provider_info = array(
-                'id'          => $item['id'],
+                'id'          => $i,
                 'a'           => $item['item'],
                 'start_value' => $item['start_count'],
                 'end_count'   => $item['end_count'],
                 'zone'        => $zone,
                 'as'          => $item['end_item']->asn,
                 'description' => $item['end_item']->aslist->descriptions,
-                'country'     => $item['end_item']->aslist->country
+                'country'     => $item['end_item']->aslist->country,
+                'diff'        => (int) $item['end_count'] - (int)$item['start_count']
             );
 
-            array_push($return_array, $provider_info);
+            if ($item['item'] != 'None') {
+                $i++;
+                array_push($return_array, $provider_info);
+            }
         }
 
-        print_r($return_array);
+        return json_encode(['iTotalRecords'         => $i,
+                            'iTotalDisplayRecords'  => $i,
+                            'aaData'                => $return_array]);
     }
 
     /**

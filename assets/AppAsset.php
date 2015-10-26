@@ -21,6 +21,7 @@ class AppAsset extends AssetBundle
         '/css/bootstrap.min.css',
         '/css/index.css',
         '/css/daterangepicker.css',
+        'https://cdn.datatables.net/r/bs/jqc-1.11.3,dt-1.10.9,af-2.0.0,fc-3.1.0,fh-3.0.0,kt-2.0.0/datatables.min.css',
         'https://fonts.googleapis.com/css?family=Open+Sans:400,800,700,600,800italic,700italic,600italic,400italic&subset=latin,cyrillic',
     ];
     public $js = [
@@ -29,7 +30,8 @@ class AppAsset extends AssetBundle
         '/js/moment.min.js',
         '/js/jquery.daterangepicker.js',
         '/js/bootstrap.min.js',
-        'http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js',
+        'https://cdn.datatables.net/r/bs/jqc-1.11.3,dt-1.10.9,af-2.0.0,fc-3.1.0,fh-3.0.0,kt-2.0.0/datatables.min.js',
+//        'http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js',
         '/js/index.js',
     ];
     public $depends = [

@@ -1,4 +1,15 @@
-#RewriteEngine on
-#RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteRule . index.php
+RewriteEngine on
+
+
+RewriteCond %{REQUEST_URI} ^/ru(/)*$ [NC]
+RewriteRule (.*) ?zone=ru [L,QSA]
+
+RewriteCond %{REQUEST_URI} ^/su(/)*$ [NC]
+RewriteRule (.*) ?zone=su [L,QSA]
+
+RewriteCond %{REQUEST_URI} ^/rf(/)*$ [NC]
+RewriteRule (.*) ?zone=rf [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php
